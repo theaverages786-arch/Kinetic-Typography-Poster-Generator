@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --poster-bg: #0a0a0c;
+    --poster-fg: #39ff14;
+    --poster-accent1: #ff007f;
+    --poster-accent2: #ffff00;
+    --poster-border: #39ff14;
+    
+    --marquee-speed: 10s;
+    --marquee-speed-fast: 6s;
+    --marquee-speed-slow: 15s;
+    --marquee-timing-fn: linear;
+    --scale-rhythm: 2.4s;
+    --scale-intensity: 1.15;
+    --skew-angle: 0deg;
+    --letter-spacing: -0.04em;
+    --stroke-width: 2px;
+    --play-state: running;
+  }
+}
+
+/* Raw CSS Animation Keyframes */
+
+@keyframes marquee-scroll-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-scroll-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes kinetic-scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(var(--scale-intensity, 1.15));
+  }
+}
+
+@keyframes kinetic-scale-punch {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(calc(var(--scale-intensity, 1.15) * 1.08));
+  }
+  30% {
+    transform: scale(0.96);
+  }
+  45%, 100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes kinetic-skew-oscillation {
+  0%, 100% {
+    transform: skewX(var(--skew-angle, 0deg));
+  }
+  50% {
+    transform: skewX(calc(var(--skew-angle, 0deg) * -1.2 + 6deg));
+  }
+}
+
+@keyframes kinetic-rgb-glitch {
+  0%, 100% {
+    text-shadow: -2px 0 var(--poster-accent1, #ff007f), 2px 0 var(--poster-accent2, #00f0ff);
+  }
+  25% {
+    text-shadow: 3px 0 var(--poster-accent1, #ff007f), -3px 0 var(--poster-accent2, #00f0ff);
+  }
+  50% {
+    text-shadow: -1px 2px var(--poster-accent1, #ff007f), 1px -2px var(--poster-accent2, #00f0ff);
+  }
+  75% {
+    text-shadow: 2px -1px var(--poster-accent1, #ff007f), -2px 1px var(--poster-accent2, #00f0ff);
+  }
+}
+
+@keyframes scanline-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+@keyframes text-stroke-breathe {
+  0%, 100% {
+    -webkit-text-stroke-width: var(--stroke-width, 2px);
+    letter-spacing: var(--letter-spacing, 0em);
+  }
+  50% {
+    -webkit-text-stroke-width: calc(var(--stroke-width, 2px) + 2px);
+    letter-spacing: calc(var(--letter-spacing, 0em) + 0.08em);
+  }
+}
+
+@keyframes cylinder-tumble {
+  0% {
+    transform: perspective(600px) rotateX(15deg) rotateY(-5deg) translateZ(0);
+  }
+  50% {
+    transform: perspective(600px) rotateX(-12deg) rotateY(6deg) translateZ(20px);
+  }
+  100% {
+    transform: perspective(600px) rotateX(15deg) rotateY(-5deg) translateZ(0);
+  }
+}
+
+/* Kinetic Classes */
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll-left var(--marquee-speed, 10s) var(--marquee-timing-fn, linear) infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll-right var(--marquee-speed, 10s) var(--marquee-timing-fn, linear) infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-kinetic-scale {
+  animation: kinetic-scale-pulse var(--scale-rhythm, 2.4s) ease-in-out infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-kinetic-punch {
+  animation: kinetic-scale-punch var(--scale-rhythm, 2.4s) cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-kinetic-skew {
+  animation: kinetic-skew-oscillation calc(var(--scale-rhythm, 2.4s) * 1.5) ease-in-out infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-rgb-glitch {
+  animation: kinetic-rgb-glitch 0.25s steps(2, start) infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-stroke-breathe {
+  animation: text-stroke-breathe var(--scale-rhythm, 2.4s) ease-in-out infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+.animate-cylinder {
+  animation: cylinder-tumble calc(var(--scale-rhythm, 2.4s) * 2) ease-in-out infinite;
+  animation-play-state: var(--play-state, running);
+}
+
+/* Text Outline Stroke */
+.text-outline-mode {
+  color: transparent !important;
+  -webkit-text-stroke: var(--stroke-width, 2px) var(--poster-fg, currentColor);
+}
+
+.text-outline-accent1 {
+  color: transparent !important;
+  -webkit-text-stroke: var(--stroke-width, 2px) var(--poster-accent1, currentColor);
+}
+
+.text-outline-accent2 {
+  color: transparent !important;
+  -webkit-text-stroke: var(--stroke-width, 2px) var(--poster-accent2, currentColor);
+}
+
+/* Hover distortion interactions without heavy JS */
+.kinetic-interactive-text {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              letter-spacing 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kinetic-interactive-text:hover {
+  transform: scale(1.08) skewX(-6deg);
+  letter-spacing: 0.12em !important;
+  filter: drop-shadow(0 0 15px var(--poster-fg)) drop-shadow(0 0 30px var(--poster-accent1));
+}
+
+.kinetic-row-hover:hover .animate-marquee-left,
+.kinetic-row-hover:hover .animate-marquee-right {
+  animation-duration: calc(var(--marquee-speed) * 0.45);
+}
+
+/* Scanline and Texture Overlays */
+.scanline-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0, 0, 0, 0.35) 50%,
+    rgba(0, 0, 0, 0.35)
+  );
+  background-size: 100% 4px;
+}
+
+.brutalist-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.brutalist-grid-pattern-dark {
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Noise overlay */
+.noise-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* Font Family definitions */
+.font-syne { font-family: 'Syne', sans-serif; }
+.font-unbounded { font-family: 'Unbounded', sans-serif; }
+.font-anton { font-family: 'Anton', sans-serif; }
+.font-bebas { font-family: 'Bebas Neue', sans-serif; }
+.font-mono-jb { font-family: 'JetBrains Mono', monospace; }
+.font-rubik-glitch { font-family: 'Rubik Glitch', system-ui; }
+.font-major-mono { font-family: 'Major Mono Display', monospace; }
+.font-work-sans { font-family: 'Work Sans', sans-serif; }
+
+/* Custom Scrollbar for Controls */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
